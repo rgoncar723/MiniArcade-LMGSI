@@ -110,7 +110,37 @@ inicializarJuego();
 // -------------------------------------
 
 // TODO: Variables del juego
+const btnPiedra = document.querySelector('#btnPiedra');
+const btnPapel = document.querySelector('#btnPapel');
+const btnTijera = document.querySelector('#btnTijera');
+const btnReiniciarPPT = document.querySelector('#btnReiniciarPPT');
+const mensajePPT = document.querySelector('#mensajePPT');
+const totalPPT = document.querySelector('#totalPPT');
+const ganadasPPT = document.querySelector('#ganadasPPT');
+const perdidasPPT = document.querySelector('#perdidasPPT');
+const empatadasPPT = document.querySelector('#empatadasPPT');
+const eleccionJugador = document.querySelector('#eleccionJugador');
+const eleccionMaquina = document.querySelector('#eleccionMaquina');
+
+//LocalStorage
+const CLAVE_STORAGE = "historial_PPT";
 
 // TODO: Funciones del juego
+function jugar(eleccionJugador){
+    const opciones = ["Piedta","Papel","Tijera"];
+    const eleccionMaquina = opciones[Math.floor(Math.random() * 3)]; //Puede escoger dentro del array O Piedra, o Papel, O Tijera
+    if (eleccionJugador === eleccionMaquina) {
+        resultado = "Empate";
+    }else if ((eleccionJugador === "Piedra" && eleccionMaquina === "Tijera") || (eleccionJugador === "Papel" && eleccionMaquina === "Piedra") || (eleccionJugador === "Tijera" && eleccionMaquina === "Papel")
+    ){ resultado = "Ganada"; 
+
+    } else {
+        resultado = "Perdida"
+    }
+     eleccionJugador.textContent = eleccionJugador;
+     eleccionMaquina.textContent = eleccionMaquina;
+     mensajePPT.textContent = `¡Has ${resultado.toLowerCase()}!`;
+    }
 
 // TODO: Eventos del juego
+jugar(eleccionJugador);
