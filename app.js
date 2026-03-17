@@ -27,50 +27,68 @@ for (const button of tabButtons) {
 // -------------------------------------
 
 // TODO: Variables del juego
-let numeroSecreto;
-const numeroIntentos = 0;
-const numerosIntroducidos = [];
+let numeroSecreto = 0;
+let numeroIntentos = 0;
+let numerosIntroducidos = [];
+
 const numeroIntroducido = document.querySelector('#inputNumero');
-const btnComprobar = document.querySelector('.btnComprobarNumero');
-const btnReinicar = document.querySelector('.btnReiniciarNumero');
-const mensajeNumero = document.querySelector('.mensajeNumero');
-const mensaje = document.querySelector('#mensaje');
+const btnComprobar = document.querySelector('#btnComprobarNumero');
+const btnReiniciar = document.querySelector('#btnReiniciarNumero');
+const intentos = document.querySelector('#intentosNumero'); 
+const mensaje = document.querySelector('#mensajeNumero');
 
 function inicializarJuego(){
-    numeroSecreto = Math.ceil(Math.randor()*100); //Genera un numero aleatorio entre 1 y 100
+    numeroSecreto = Math.ceil(Math.random()*100); //Genera un numero aleatorio entre 1 y 100
     numeroIntentos = 0;
     numerosIntroducidos = [];
+
+    mensaje.innerHTML = "";
+    intentos.textContent = "0";
+    numeroIntroducido.value = "";
+    console.log("Número secreto: " + numeroSecreto);
 }
 function verificarNumero(){
-    if(numeroIntroducido < 0 || numeroIntroducido > 100){ //Comprueba que el número introducido no sea mayor de 100 pero tampoco menor que 0. 
+    const valorInput = parseInt(numeroIntroducido.value);
+    if (isNaN(valorInput)) {
+        alert('Por favor, introduce un número válido');
+        return;
+    }
+
+    if(valorInput < 0 || valorInput > 100){ //Comprueba que el número introducido no sea mayor de 100 pero tampoco menor que 0. 
         alert('EL numero no puede ser menor que 0 ni mayor de 100');
        return;
     }
-    if(numerosIntroducidos.includes(numeroIntroducido)){ //Comprueba si el numero que ha introducido el usuario, no ha sido introducido anteriormente.
+    if(numerosIntroducidos.includes(valorInput)){ //Comprueba si el numero que ha introducido el usuario, no ha sido introducido anteriormente.
         alert('Ya has introducido este numero, prueba con otro');
         return;
     }
     numeroIntentos++;
-    numerosIntroducidos.push(numeroIntroducido);
-    if(numeroIntroducido == numeroSecreto){
+    numerosIntroducidos.push(valorInput);
+    intentos.textContent = numeroIntentos;
+
+    if(valorInput === numeroSecreto){
         mensaje.innerHTML = `Has Adivinado el numero ${numeroSecreto}, en ${numeroIntentos} intentos`
     } else {
-        const diferencia = Math.abs(numeroIntroducido - numeroSecreto);
-        const pista = numeroSecreto > numeroIntroducido ? "MAYOR" : "MENOR";
+        const diferencia = Math.abs( numeroSecreto - numeroIntroducido);
+        let pista = numeroSecreto > numeroIntroducido ? "MAYOR" : "MENOR";
+        let temperatura = "";
         if(diferencia > 20 ){
-            mensaje.innerHTML = "frio....frio....";
+            temperatura =  "frio....frio....";
         } else if (diferencia >= 10){
-            mensaje.innerHTML = "estas caliente....caliente";
+            temperatura = "estas caliente....caliente";
         } else {
-            mensaje.innerHTML = "Te has quemado";
+            temperatura = "Te has quemado";
         }
+       mensaje.innerHTML = `El numero es ${pista} y la temperatura es ${temperatura}`;
+       mensaje.innerHTML = ``;
     }
+    
 }
-function mostrarMenasje(mensaje){
-    mensaje.textContent = "";
-}
+
 btnComprobar.addEventListener("click", verificarNumero);
 btnReiniciar.addEventListener("click", inicializarJuego);
+
+inicializarJuego();
 
 
 // TODO: Funciones del juego
