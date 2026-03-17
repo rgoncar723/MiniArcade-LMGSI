@@ -69,8 +69,8 @@ function verificarNumero(){
     if(valorInput === numeroSecreto){
         mensaje.innerHTML = `Has Adivinado el numero ${numeroSecreto}, en ${numeroIntentos} intentos`
     } else {
-        const diferencia = Math.abs( numeroSecreto - numeroIntroducido);
-        let pista = numeroSecreto > numeroIntroducido ? "MAYOR" : "MENOR";
+        const diferencia = Math.abs(valorInput - numeroSecreto);
+        const pista = numeroSecreto > valorInput ? "MAYOR" : "MENOR";
         let temperatura = "";
         if(diferencia > 20 ){
             temperatura =  "frio....frio....";
@@ -79,8 +79,9 @@ function verificarNumero(){
         } else {
             temperatura = "Te has quemado";
         }
+        mensaje.innerHTML = ``;
        mensaje.innerHTML = `El numero es ${pista} y la temperatura es ${temperatura}`;
-       mensaje.innerHTML = ``;
+       
     }
     
 }
