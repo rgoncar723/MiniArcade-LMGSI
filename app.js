@@ -82,7 +82,8 @@ function verificarNumero(){
             temperatura = "¡Te has quemado!";
         }
         mensaje.innerHTML = ``;
-       mensaje.innerHTML = `El numero es ${pista} y la temperatura es ${temperatura}`;
+       mensaje.innerHTML = `El numero es ${pista} y la temperatura es ${temperatura} y has utilizado los siguientes numeros ${numerosIntroducidos}`;
+
        
     }
     
@@ -121,26 +122,54 @@ const perdidasPPT = document.querySelector('#perdidasPPT');
 const empatadasPPT = document.querySelector('#empatadasPPT');
 const eleccionJugador = document.querySelector('#eleccionJugador');
 const eleccionMaquina = document.querySelector('#eleccionMaquina');
+let paritda = cargarPartida();
 
 //LocalStorage
 const CLAVE_STORAGE = "historial_PPT";
 
 // TODO: Funciones del juego
+function cargarPartida() {
+    const raw = localStorage.getItem(CLAVE_STORAGE);
+    
+    if(raw === null) {
+        return []
+    }; 
+
+    try {
+        const datos = JSON.parse(raw);
+        return Array.isArray(datos) ? datos : [];
+    } catch (e) {
+        console.error("Error al parsear la partida:", e);
+        return [];
+    }
+}
 function jugar(eleccionJugador){
     const opciones = ["Piedta","Papel","Tijera"];
     const eleccionMaquina = opciones[Math.floor(Math.random() * 3)]; //Puede escoger dentro del array O Piedra, o Papel, O Tijera
     if (eleccionJugador === eleccionMaquina) {
-        resultado = "Empate";
+        resultado = "empatado";
     }else if ((eleccionJugador === "Piedra" && eleccionMaquina === "Tijera") || (eleccionJugador === "Papel" && eleccionMaquina === "Piedra") || (eleccionJugador === "Tijera" && eleccionMaquina === "Papel")
-    ){ resultado = "Ganada"; 
+    ){ resultado = "ganado"; 
 
     } else {
-        resultado = "Perdida"
+        resultado = "perdido"
     }
      eleccionJugador.textContent = eleccionJugador;
      eleccionMaquina.textContent = eleccionMaquina;
      mensajePPT.textContent = `¡Has ${resultado.toLowerCase()}!`;
+
+    localStorage.setItem(CLAVE_STORAGE, JSON.stringify(partida));
+
     }
 
 // TODO: Eventos del juego
+
+partida = cargarPartida();
+
 jugar(eleccionJugador);
+
+
+btnPiedra.addEventListener("click", jugar);
+btnPapel.addEventListener("click",jugar);
+btnTijera.addEventListener("click",jugar);
+btnReiniciarPPT.addEventListener("click",cargarPartida);
