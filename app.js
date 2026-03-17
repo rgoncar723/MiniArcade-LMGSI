@@ -37,6 +37,11 @@ const btnReiniciar = document.querySelector('#btnReiniciarNumero');
 const intentos = document.querySelector('#intentosNumero'); 
 const mensaje = document.querySelector('#mensajeNumero');
 
+
+
+
+// TODO: Funciones del juego
+
 function inicializarJuego(){
     numeroSecreto = Math.ceil(Math.random()*100); //Genera un numero aleatorio entre 1 y 100
     numeroIntentos = 0;
@@ -49,13 +54,10 @@ function inicializarJuego(){
 }
 function verificarNumero(){
     const valorInput = parseInt(numeroIntroducido.value);
-    if (isNaN(valorInput)) {
-        alert('Por favor, introduce un número válido');
-        return;
-    }
 
     if(valorInput < 0 || valorInput > 100){ //Comprueba que el número introducido no sea mayor de 100 pero tampoco menor que 0. 
         alert('EL numero no puede ser menor que 0 ni mayor de 100');
+        numeroIntroducido.value = 0;
        return;
     }
     if(numerosIntroducidos.includes(valorInput)){ //Comprueba si el numero que ha introducido el usuario, no ha sido introducido anteriormente.
@@ -67,17 +69,17 @@ function verificarNumero(){
     intentos.textContent = numeroIntentos;
 
     if(valorInput === numeroSecreto){
-        mensaje.innerHTML = `Has Adivinado el numero ${numeroSecreto}, en ${numeroIntentos} intentos`
+        mensaje.innerHTML = `¡Has adivinado el numero ${numeroSecreto}, en ${numeroIntentos} intentos!`
     } else {
-        const diferencia = Math.abs(valorInput - numeroSecreto);
-        const pista = numeroSecreto > valorInput ? "MAYOR" : "MENOR";
+        const diferencia = Math.abs(valorInput - numeroSecreto); //Calcula diferencia absoluta del numero introducido con el numero secreto
+        const pista = numeroSecreto > valorInput ? "MAYOR" : "MENOR"; //Le ofrece una pista al usuario dependiendo de si el numero introducido es mayor o menor que el numero secreto.
         let temperatura = "";
         if(diferencia > 20 ){
-            temperatura =  "frio....frio....";
+            temperatura =  "frío....frío....";
         } else if (diferencia >= 10){
-            temperatura = "estas caliente....caliente";
+            temperatura = "Caliente!....caliente!";
         } else {
-            temperatura = "Te has quemado";
+            temperatura = "¡Te has quemado!";
         }
         mensaje.innerHTML = ``;
        mensaje.innerHTML = `El numero es ${pista} y la temperatura es ${temperatura}`;
@@ -86,16 +88,11 @@ function verificarNumero(){
     
 }
 
+// TODO: Eventos del juego
 btnComprobar.addEventListener("click", verificarNumero);
 btnReiniciar.addEventListener("click", inicializarJuego);
 
 inicializarJuego();
-
-
-// TODO: Funciones del juego
-
-// TODO: Eventos del juego
-
 
 // -------------------------------------
 // 2. Siete y medio
